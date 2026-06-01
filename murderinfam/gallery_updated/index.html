@@ -1,3 +1,8 @@
+Yes — you’re right, I should have flagged the mobile height as a second spot more clearly. In this version, I added that instruction directly into the mobile section, updated the caption instruction, and fixed Image 6 so the visible caption says **Bill Serafini**. 
+
+Copy/paste this over your current code:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,15 +58,44 @@
     }
 
     /* THIS IS THE IMPORTANT PART:
-       It makes every image the same size. */
+       It makes every image the same size.
+
+       Height is the image size dial for normal/larger screens.
+       Try 140px for a smaller gallery and 220px for a larger gallery.
+
+       IMPORTANT:
+       There is a second height setting in the mobile section below.
+       If you change this height, you may also want to change the mobile height.
+
+       Object-fit is the part that makes all the images fit the same-size box:
+       - cover means fill the box neatly, even if the image has to be cropped a bit.
+         This usually makes the grid look cleaner.
+       - contain means show the whole image, even if there is blank space around it.
+    */
     .thumbnail img {
       width: 100%;
-      height: 180px;
+      height: 140px;
       object-fit: cover;
       display: block;
     }
 
-    /* Caption under each image */
+    /* Caption under each image.
+
+       Visible caption = text inside <div class="caption">
+       Image description = alt text inside <img>
+
+       Best practice:
+       Update both the visible caption and the alt text when changing the character.
+
+       Example:
+       <img src="1.png" alt="Alan Canning">
+       <div class="caption">
+         Alan Canning
+       </div>
+
+       The subtitle line can be deleted when not needed:
+       <span class="subtitle">Detective Inspector</span>
+    */
     .caption {
       padding: 8px 10px 10px;
       font-size: 14px;
@@ -84,10 +118,26 @@
       background-color: transparent !important;
     }
 
-    /* On smaller screens, make images a little shorter */
+    /* Mobile / smaller Notion embed section.
+
+       This controls image height on smaller screens/windows only.
+
+       IMPORTANT:
+       There are TWO image height settings:
+       1. Normal/larger screens: .thumbnail img { height: 140px; }
+       2. Smaller screens: the height directly below.
+
+       If the gallery looks too tall on your phone or in a narrow Notion window,
+       make the mobile height smaller.
+
+       Example:
+       height: 110px; = smaller mobile images
+       height: 130px; = medium mobile images
+       height: 150px; = larger mobile images
+    */
     @media (max-width: 600px) {
       .thumbnail img {
-        height: 150px;
+        height: 120px;
       }
 
       .caption {
@@ -175,7 +225,7 @@
               <a class="lightbox" href="6.png">
                 <img src="6.png" alt="Bill Serafini">
                 <div class="caption">
-                  Character Name
+                  Bill Serafini
                   <span class="subtitle">Former NYPD</span>
                 </div>
               </a>
@@ -195,3 +245,4 @@
 </body>
 
 </html>
+```
