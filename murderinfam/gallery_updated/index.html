@@ -53,27 +53,30 @@
     }
 
     /* THIS IS THE IMPORTANT PART:
-       It makes every image the same size.
+       It makes every image fit inside the same-size image box.
 
        Height is the image size dial for normal/larger screens.
-       Try 140px for a smaller gallery and 220px for a larger gallery.
+       Try 120px-140px for a smaller gallery and 180px-220px for a larger gallery.
 
        IMPORTANT:
        There is a second height setting in the mobile section below.
        If you change this height, you may also want to change the mobile height.
 
-       Object-fit is the part that makes all the images fit the same-size box:
-       - cover means fill the box neatly, even if the image has to be cropped a bit.
-         This usually makes the grid look cleaner.
+       Object-fit controls how images fit inside the same-size box:
        - contain means show the whole image, even if there is blank space around it.
+         This avoids cropping faces/heads/bodies.
+       - cover means fill the box neatly, even if the image has to be cropped a bit.
+         This usually makes the grid look cleaner, but it can cut off parts of the image.
+
+       When using object-fit: contain, larger heights may create more blank space around some images.
     */
     .thumbnail img {
       width: 100%;
       height: 140px;
       object-fit: contain;
       display: block;
-    background-color: #f7f7f7;
-}
+      background-color: #f7f7f7;
+    }
 
     /* Caption under each image.
 
@@ -132,12 +135,12 @@
        height: 150px; = larger mobile images
     */
     @media (max-width: 600px) {
-  .thumbnail img {
-    height: 120px;
-  }
+      .thumbnail img {
+        height: 120px;
+      }
 
-  .caption {
-    font-size: 13px;
+      .caption {
+        font-size: 13px;
       }
     }
   </style>
