@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
+
+  <style>
+    /* Overall page */
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    /* Gallery wrapper */
+    .tz-gallery {
+      padding: 10px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* This controls the space between image cards */
+    .gallery-item {
+      margin-bottom: 18px;
+    }
+
+    /* Card around each image */
+    .thumbnail {
+      padding: 0;
+      background-color: #fff;
+      border-radius: 8px;
+      border: none;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+      transition: 0.15s ease-in-out;
+    }
+
+    .thumbnail:hover {
+      transform: translateY(-3px);
+    }
+
+    /* Image link */
+    .thumbnail a {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* THIS IS THE IMPORTANT PART:
+       It makes every image the same size. */
+    .thumbnail img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Caption under each image */
+    .caption {
+      padding: 8px 10px 10px;
+      font-size: 14px;
+      line-height: 1.25;
+      font-weight: 600;
+      text-align: center;
+      color: #333;
+      background: #fff;
+    }
+
+    .caption .subtitle {
+      display: block;
+      margin-top: 2px;
+      font-size: 12px;
+      font-weight: 400;
+      color: #666;
+    }
+
+    .baguetteBox-button {
+      background-color: transparent !important;
+    }
+
+    /* On smaller screens, make images a little shorter */
+    @media (max-width: 600px) {
+      .thumbnail img {
+        height: 150px;
+      }
+
+      .caption {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main>
+    <section id="gallery">
+      <div class="tz-gallery">
+        <div class="row">
+
+          <!-- Image 1 -->
+          <div class="gallery-item col-6 col-md-4">
+            <div class="thumbnail">
+              <a class="lightbox" href="1.png">
+                <img src="1.png" alt="Alan Canning">
+                <div class="caption">
+                  Alan Canning
+                  <span class="subtitle">Detective Inspector</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Image 2 -->
+          <div class="gallery-item col-6 col-md-4">
+            <div class="thumbnail">
+              <a class="lightbox" href="2.png">
+                <img src="2.png" alt="Mitchell Clarke">
+                <div class="caption">
+                  Mitchell Clarke
+                  <span class="subtitle">Journalist</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Image 3 -->
+          <div class="gallery-item col-6 col-md-4">
+            <div class="thumbnail">
+              <a class="lightbox" href="3.png">
+                <img src="3.png" alt="Hugo Fraser KC">
+                <div class="caption">
+                  Hugo Fraser KC
+                  <span class="subtitle">Prosecutor</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Image 4 -->
+          <div class="gallery-item col-6 col-md-4">
+            <div class="thumbnail">
+              <a class="lightbox" href="4.png">
+                <img src="4.png" alt="Dr Laila Furness">
+                <div class="caption">
+                  Dr Laila Furness
+                  <span class="subtitle">Forensic psychologist</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Image 5 -->
+          <div class="gallery-item col-6 col-md-4">
+            <div class="thumbnail">
+              <a class="lightbox" href="5.png">
+                <img src="5.png" alt="JJ Norton">
+                <div class="caption">
+                  JJ Norton
+                  <span class="subtitle">Crime scene investigator</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Image 6 -->
+          <div class="gallery-item col-6 col-md-4">
+            <div class="thumbnail">
+              <a class="lightbox" href="6.png">
+                <img src="6.png" alt="Bill Serafini">
+                <div class="caption">
+                  Character Name
+                  <span class="subtitle">Former NYPD</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
+      <script>
+        baguetteBox.run('.tz-gallery');
+      </script>
+    </section>
+  </main>
+
+</body>
+
+</html>
