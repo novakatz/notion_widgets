@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Notion Manual Image Slider with Cover</title>
+
+  <!-- Font Awesome = arrow icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <!-- BaguetteBox = lightbox / click-to-enlarge feature -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap");
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /*
+      EASY DESIGN SETTINGS:
+
+      Change these to update the cover colors and slider size.
+
+      Cover color examples:
+      Navy: #0b1f3a
+      Deep green: #18392b
+      Burgundy: #4a1723
+      Charcoal: #2b2b2b
+      Cream: #f4efe6
+
+      Font color examples:
+      White: #ffffff
+      Cream: #f4efe6
+      Gold: #d8b45b
+      Charcoal: #2b2b2b
+    */
+    :root {
+      --cover-background-color: #0b1f3a;
+      --cover-font-color: #ffffff;
+      --cover-accent-color: #d8b45b;
+
+      --slider-background-color: #f7f7f7;
+      --slider-height: 300px;
+      --slider-mobile-height: 220px;
+      --slider-max-width: 700px;
+    }
+
+    body {
+      font-family: "Lexend", sans-serif;
+      background-color: transparent;
+      color: #333;
+    }
+
+    /*
+      SLIDER SIZE:
+
+      height controls how tall the slider is.
+      max-width controls how wide the slider can get.
+
+      To make the whole slider smaller:
+      - lower --slider-height above
+      - lower --slider-mobile-height above
+
+      Example:
+      --slider-height: 240px;
+      --slider-mobile-height: 180px;
+    */
+    .slider-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: var(--slider-max-width);
+      margin: 0 auto;
+    }
+
+    .slider {
+      position: relative;
+      width: 100%;
+      height: var(--slider-height);
+      overflow: hidden;
+      background-color: var(--slider-background-color);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+    }
+
+    /*
+      EACH SLIDE:
+
+      Slides sit on top of each other.
+      Only the slide with class="current" is visible.
+    */
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease-in-out;
+    }
+
+    .slide.current {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /*
+      CODED COVER SLIDE:
+
+      This is the default cover card.
+      No image file is needed.
+
+      To change the cover text, edit the HTML below:
+      <h1>Image Gallery</h1>
+      <p>Book Title</p>
+      <span>Use arrows to browse</span>
+
+      To change the cover colors, edit the :root color settings above:
+      --cover-background-color
+      --cover-font-color
+      --cover-accent-color
+    */
+    .cover-slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      background-color: var(--cover-background-color);
+      color: var(--cover-font-color);
+      padding: 24px;
+    }
+
+    .cover-content h1 {
+      font-size: 28px;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .cover-content p {
+      font-size: 16px;
+      line-height: 1.3;
+      margin-bottom: 14px;
+      color: var(--cover-accent-color);
+    }
+
+    .cover-content span {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    /*
+      IMAGE SLIDES:
+
+      This setup handles images of different sizes.
+
+      object-fit: contain means:
+      - show the whole image
+      - do not crop faces/edges
+      - allow blank space around the image if needed
+
+      If you prefer a more filled-in look and do not mind cropping, change:
+      object-fit: contain;
+      to:
+      object-fit: cover;
+    */
+    .image-slide a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 100%;
+      height: 100%;
+
+      text-decoration: none;
+      background-color: var(--slider-background-color);
+    }
+
+    .image-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    /*
+      ARROW BUTTONS:
+
+      These let you move manually through the slides.
+      The slider does NOT auto-advance.
+    */
+    .buttons button#prev {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+    }
+
+    .buttons button#next {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+    }
+
+    .buttons button {
+      border: none;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #333;
+      cursor: pointer;
+
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+
+      outline: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    }
+
+    .buttons button:hover {
+      background-color: #ffffff;
+    }
+
+    .baguetteBox-button {
+      background-color: transparent !important;
+    }
+
+    /*
+      MOBILE / SMALLER NOTION EMBED:
+
+      This controls the slider height in smaller windows or phone view.
+      To make mobile smaller, change --slider-mobile-height in :root above.
+    */
+    @media (max-width: 600px) {
+      .slider {
+        height: var(--slider-mobile-height);
+      }
+
+      .cover-content h1 {
+        font-size: 22px;
+      }
+
+      .cover-content p {
+        font-size: 14px;
+      }
+
+      .cover-content span {
+        font-size: 12px;
+      }
+
+      .buttons button {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="slider-wrapper">
+
+    <div class="slider">
+
+      <!--
+        COVER SLIDE:
+
+        This is the default/resting slide.
+        It is generated by the code, so you do not need a cover image file.
+
+        Change the title, subtitle, and instruction text below.
+
+        IMPORTANT:
+        Only ONE slide should have the word current.
+        In this template, the cover slide has current because the slider starts on the cover.
+      -->
+      <div class="slide cover-slide current">
+        <div class="cover-content">
+          <h1>Image Gallery</h1>
+          <p>Book Title</p>
+          <span>Use arrows to browse. Click images to enlarge.</span>
+        </div>
+      </div>
+
+      <!--
+        IMAGE SLIDES:
+
+        This template is set up for 12 images:
+        1.png through 12.png
+
+        To add images:
+        1. Upload the new image to the same GitHub folder.
+        2. Name it with the next number, for example: 13.png.
+        3. Copy one full image-slide section.
+        4. Paste it underneath the last image-slide section.
+        5. Change the image file in both places:
+           href="13.png"
+           src="13.png"
+        6. Change the alt text:
+           alt="Image 13 description"
+
+        To remove images:
+        1. Delete the full image-slide section you do not need.
+        2. You do not need to change the CSS or JavaScript.
+        3. Make sure only the cover slide has the word current.
+
+        The href controls the enlarged lightbox image.
+        The src controls the image shown in the slider.
+
+        Best practice:
+        Keep filenames simple:
+        1.png, 2.png, 3.png, etc.
+      -->
+
+      <!-- Image 1 -->
+      <div class="slide image-slide">
+        <a class="lightbox" href="1.png">
+          <img src="1.png" alt="Image 1">
+        </a>
+      </div>
+
+      <!-- Image 2 -->
+      <div class="slide image-slide">
+        <a class="lightbox" href="2.png">
+          <img src="2.png" alt="Image 2">
+        </a>
+      </div>
+
+      <!-- Image 3 -->
+      <div class="slide image-slide">
+        <a class="lightbox" href="3.png">
+          <img src="3.png" alt="Image 3">
+        </a>
+      </div>
+
+      <!-- Image 4 -->
+      <div class="slide image-slide">
+        <a class="lightbox" href="4.png">
+          <img src="4.png" alt="Image 4">
+        </a>
+      </div>
+
+      <!-- Image 5 -->
+      <div class="slide image-slide">
+        <a class="lightbox" href="5.png">
+          <img src="5.png" alt="Image 5">
+        </a>
+      </div>
+
+      <!-- Image 6 -->
+      <div class="slide image-slide">
+        <a class="lightbox" href="6.png">
+          <img src="6.png" alt="Image 6">
+        </a>
+      </div>
+
+      <!-- Image 7 -->
+      <div class="slide image-slide">
+        <a class="lightbox" href="7.png">
+          <img src="7.png" alt="Image 7">
+        </a>
+      </div>
+
+      <!-- Image 8 -->
+      <div class="slide image-slide">
+        <a class="lightbox" href="8.png">
+          <img src="8.png" alt="Image 8">
+        </a>
+      </div>
+
+      <!-- Image 9 -->
+      <div class="slide image-slide">
+        <a class="lightbox" href="9.png">
+          <img src="9.png" alt="Image 9">
+        </a>
+      </div>
+
+      <!-- Image 10 -->
+      <div class="slide image-slide">
+        <a class="lightbox" href="10.png">
+          <img src="10.png" alt="Image 10">
+        </a>
+      </div>
+
+      <!-- Image 11 -->
+      <div class="slide image-slide">
+        <a class="lightbox" href="11.png">
+          <img src="11.png" alt="Image 11">
+        </a>
+      </div>
+
+      <!-- Image 12 -->
+      <div class="slide image-slide">
+        <a class="lightbox" href="12.png">
+          <img src="12.png" alt="Image 12">
+        </a>
+      </div>
+
+    </div>
+
+    <div class="buttons">
+      <button id="prev" aria-label="Previous slide"><i class="fas fa-arrow-left"></i></button>
+      <button id="next" aria-label="Next slide"><i class="fas fa-arrow-right"></i></button>
+    </div>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
+
+  <script>
+    const slides = document.querySelectorAll(".slide");
+    const nextButton = document.getElementById("next");
+    const prevButton = document.getElementById("prev");
+
+    /*
+      RESET SETTINGS:
+
+      The slider does NOT auto-advance.
+
+      It only changes when you click the arrows.
+
+      After 90 seconds of no arrow clicking, it resets back to the cover slide.
+
+      90000 = 90 seconds
+      60000 = 60 seconds
+      30000 = 30 seconds
+
+      To turn off reset-to-cover:
+      change resetToCover from true to false.
+    */
+    const resetToCover = true;
+    const resetTime = 90000;
+    let resetTimer;
+
+    const showSlide = (index) => {
+      slides.forEach(slide => slide.classList.remove("current"));
+      slides[index].classList.add("current");
+    };
+
+    const resetCoverTimer = () => {
+      if (!resetToCover) return;
+
+      clearTimeout(resetTimer);
+
+      resetTimer = setTimeout(() => {
+        showSlide(0);
+      }, resetTime);
+    };
+
+    const nextSlide = () => {
+      const current = document.querySelector(".current");
+      const currentIndex = Array.from(slides).indexOf(current);
+
+      if (currentIndex === slides.length - 1) {
+        showSlide(0);
+      } else {
+        showSlide(currentIndex + 1);
+      }
+
+      resetCoverTimer();
+    };
+
+    const prevSlide = () => {
+      const current = document.querySelector(".current");
+      const currentIndex = Array.from(slides).indexOf(current);
+
+      if (currentIndex === 0) {
+        showSlide(slides.length - 1);
+      } else {
+        showSlide(currentIndex - 1);
+      }
+
+      resetCoverTimer();
+    };
+
+    nextButton.addEventListener("click", nextSlide);
+    prevButton.addEventListener("click", prevSlide);
+
+    /*
+      LIGHTBOX:
+
+      This makes image clicks open larger.
+      The cover slide is not part of the lightbox.
+    */
+    baguetteBox.run('.slider', {
+      captions: false
+    });
+
+    resetCoverTimer();
+  </script>
+
+</body>
+
+</html>
