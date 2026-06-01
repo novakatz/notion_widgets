@@ -69,10 +69,11 @@
     */
     .thumbnail img {
       width: 100%;
-      height: 220px;
-      object-fit: cover;
+      height: 180px;
+      object-fit: contain;
       display: block;
-    }
+    background-color: #f7f7f7;
+}
 
     /* Caption under each image.
 
@@ -131,12 +132,12 @@
        height: 150px; = larger mobile images
     */
     @media (max-width: 600px) {
-      .thumbnail img {
-        height: 120px;
-      }
+  .thumbnail img {
+    height: 150px;
+  }
 
-      .caption {
-        font-size: 13px;
+  .caption {
+    font-size: 13px;
       }
     }
   </style>
